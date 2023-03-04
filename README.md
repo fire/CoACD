@@ -7,6 +7,14 @@ Approximate convex decomposition enables efficient geometry processing algorithm
 
 ![avatar](examples/teaser.png)
 
+## Compile from source for Msys
+
+```
+pacman -S cmake ninja clang mingw-w64-x86_64-openvdb mingw-w64-x86_64-boost mingw-w64-x86_64-spdlog mingw-w64-x86_64-boost mingw-w64-x86_64-tbb mingw-w64-x86_64-boost mingw-w64-x86_64-imath
+cmake .. -DCMAKE_BUILD_TYPE=Release -GNinja
+ninja
+```
+
 ## Compile from source
 
 ### (1) Clone the code

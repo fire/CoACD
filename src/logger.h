@@ -1,6 +1,6 @@
 #pragma once
 #include <exception>
-#include <spdlog/spdlog.h>
+#include "3rd/spdlog/include/spdlog/spdlog.h"
 #include <string_view>
 namespace coacd
 {

@@ -30,8 +30,9 @@ file(GLOB_RECURSE MAIN_SRC "src/*.h" "src/*.cc" "src/*.hpp" "src/*.cpp")
 add_library(coacd STATIC
     ${MAIN_SRC}
 )
-
 target_include_directories(coacd PUBLIC public)
+target_include_directories(coacd PUBLIC 3rd/spdlog/include)
+target_include_directories(coacd PUBLIC /mingw64/include)
 target_include_directories(coacd PRIVATE src)
 target_include_directories(coacd PRIVATE 3rd/cdt/CDT)
 
@@ -40,8 +41,8 @@ if (HALF_LIBRARY)
     target_link_libraries(coacd ${HALF_LIBRARY})
 endif()
 
-target_link_libraries(coacd -lopenvdb -lboost_iostreams -ltbb)
+target_link_directories(coacd PUBLIC /mingw64/lib)
 
 add_executable(main main.cpp)
-target_link_libraries(main coacd)
+target_link_libraries(main tbb12 openvdb boost_iostreams-mt Imath coacd)
 target_include_directories(main PRIVATE src)
