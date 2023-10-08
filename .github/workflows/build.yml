@@ -14,10 +14,21 @@ jobs:
       matrix:
         config:
           - { os: "linux", build-dir: "build-linux", toolchain-file: "" }
+          - {
+              os: "windows",
+              build-dir: "build-windows",
+              toolchain-file: "mingw_toolchain.cmake",
+            }
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: "true"
+      - name: Install LLVM-MinGW
+        run: |
+          wget https://github.com/mstorsjo/llvm-mingw/releases/download/20231003/llvm-mingw-20231003-ucrt-ubuntu-20.04-x86_64.tar.xz
+          tar xf llvm-mingw-20231003-ucrt-ubuntu-20.04-x86_64.tar.xz
+          mv llvm-mingw-20231003-ucrt-ubuntu-20.04-x86_64 llvm-mingw
+          echo "$(pwd)/llvm-mingw/bin" >> $GITHUB_PATH
       - name: Install Clang
         run: |
           sudo apt-get update
@@ -33,7 +44,7 @@ jobs:
         run: |
           mkdir -p ${{ matrix.config.build-dir }}
           cd ${{ matrix.config.build-dir }}
-          cmake .. -DCMAKE_BUILD_TYPE=Release -DTBB_TEST=OFF -DCMAKE_CXX_FLAGS="-fPIC"
+          cmake .. -DCMAKE_BUILD_TYPE=Release -DTBB_TEST=OFF -DCMAKE_CXX_FLAGS="-fPIC" -DCMAKE_TOOLCHAIN_FILE=../${{ matrix.config.toolchain-file }}
           make -j$(nproc)
       - name: List Build Results
         run: |
